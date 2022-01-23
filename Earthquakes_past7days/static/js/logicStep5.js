@@ -31,7 +31,15 @@ let earthquakes = new L.LayerGroup();
 let overlays = {
   Earthquakes: earthquakes
 };
+// Create the map object with center and zoom level
+let map = L.map("mapid", {
+  center: [39.5,-98.5],
+  zoom: 3,
+  layers: [streets]
+});
 
+//Add a control to the map that will allow the user to change which layers are visable
+L.control.layers(baseMaps, overlays).addTo(map);
 //Create a legend control object
 let legend = L.control({
   position:"bottomright"
@@ -40,24 +48,14 @@ let legend = L.control({
 //Then add all the details for the legend
 legend.onAdd = function() {
   let div = L.DomUtil.create("div", "info legend");
-};
+
 
 const magnitudes = [0,1,2,3,4,5];
 const colors = ['orange', 'green', 'blue', 'yellow', 'purple', 'pink'];
 
-// Create the map object with center and zoom level
-let map = L.map("mapid", {
-  center: [39.5,-98.5],
-  zoom: 3,
-  layers: [streets]
-});
 
 
-
-//Add a control to the map that will allow the user to change which layers are visable
-L.control.layers(baseMaps, overlays).addTo(map);
-
-//Looping through our intervals to generate a label with a colored square for each interval
+// Looping through our intervals to generate a label with a colored square for each interval.
 for (var i = 0; i < magnitudes.length; i++) {
   console.log(colors[i]);
   div.innerHTML +=
@@ -65,6 +63,8 @@ for (var i = 0; i < magnitudes.length; i++) {
     magnitudes[i] + (magnitudes[i + 1] ? "&ndash;" + magnitudes[i + 1] + "<br>" : "+");
 }
 return div;
+};
+
 legend.addTo(map);
 
 
